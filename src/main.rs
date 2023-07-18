@@ -28,15 +28,28 @@ fn main() {
     loop {
         let elapsed = start.elapsed().as_secs_f64();
 
-        // 10秒経過したら終了
-        if elapsed > 10.0 {
-            break;
+        // 30秒経過したら終了
+        if elapsed > 30.0 {
+            //break;
         }
 
-        gamepad.thumb_lx = (elapsed.cos() * 30000.0) as i16;
+        // スティックの入力
+        //gamepad.thumb_lx = (elapsed.cos() * 30000.0) as i16;
+
+        // ボタンの入力
+        //gamepad.buttons.raw = 0;
+        gamepad.buttons = vigem_client::XButtons(0x00);
+
+        // コントローラーに入力を送信
+        let _ = target.update(&gamepad);
+
+        // 1秒待機
+        thread::sleep(time::Duration::from_millis(1000));
+
+        gamepad.buttons = vigem_client::XButtons!(LEFT);
 
         let _ = target.update(&gamepad);
 
-        thread::sleep(time::Duration::from_millis(10));
+        thread::sleep(time::Duration::from_millis(1000));
     }
 }
